@@ -19,8 +19,14 @@ namespace ProgWeb3APIEventos.Controllers
 
         [HttpGet("/reservas/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<EventReservation>> Get()
         {
+            if (!_eventReservationService.GetAllReservations().Any())
+            {
+                return NotFound();
+            }
+
             return Ok(_eventReservationService.GetAllReservations());
         }
 
@@ -29,7 +35,7 @@ namespace ProgWeb3APIEventos.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public ActionResult<EventReservation> InsertReservation(EventReservation eventReservation)
         {
-            if (_eventReservationService.InsertReservation(eventReservation))
+            if (!_eventReservationService.InsertReservation(eventReservation))
             {
                 return BadRequest();
             }
@@ -42,7 +48,7 @@ namespace ProgWeb3APIEventos.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult UpdateReservation(long id, EventReservation eventReservation)
         {
-            if (_eventReservationService.UpdateReservation(id, eventReservation))
+            if (!_eventReservationService.UpdateReservation(id, eventReservation))
             {
                 return NotFound();
             }
@@ -55,7 +61,7 @@ namespace ProgWeb3APIEventos.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult DeleteReservation(long id)
         {
-            if (_eventReservationService.DeleteReservation(id))
+            if (!_eventReservationService.DeleteReservation(id))
             {
                 return NotFound();
             }

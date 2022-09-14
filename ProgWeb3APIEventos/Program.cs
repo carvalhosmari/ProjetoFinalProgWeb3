@@ -1,5 +1,6 @@
 using ProgWeb3APIEventos.Core.Interface;
 using ProgWeb3APIEventos.Core.Service;
+using ProgWeb3APIEventos.Filters;
 using ProgWeb3APIEventos.Infra.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 builder.Services.AddScoped<ICityEventService, CityEventService>();
 builder.Services.AddScoped<IEventReservationRepository, EventReservationRepository>();
 builder.Services.AddScoped<IEventReservationService, EventReservationService>();
+builder.Services.AddScoped<CanBeDeletedActionFilter>();
 
 var app = builder.Build();
 

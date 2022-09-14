@@ -27,6 +27,11 @@ namespace ProgWeb3APIEventos.Core.Service
             return _cityEventRepository.GetByLocalAndDate(local, date);
         }
 
+        public List<CityEvent> GetByPriceAndDate(decimal minPrice, decimal maxPrice, DateTime date)
+        {
+            return _cityEventRepository.GetByPriceAndDate(minPrice, maxPrice, date);
+        }
+
         public bool InsertEvent(CityEvent cityEvent)
         {
             return _cityEventRepository.InsertEvent(cityEvent);
@@ -40,6 +45,16 @@ namespace ProgWeb3APIEventos.Core.Service
         public bool DeleteEvent(long id)
         {
             return _cityEventRepository.DeleteEvent(id);
+        }
+
+        public bool HaveReservation(long id)
+        {
+            return _cityEventRepository.HaveReservation(id);
+        }
+
+        public bool IsActive(long id)
+        {
+            return _cityEventRepository.IsActive(id);
         }
     }
 }

@@ -49,6 +49,20 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             return conn.Query<CityEvent>(query, parameter).ToList();
         }
 
+        public List<CityEvent> GetByPriceAndDate(decimal minPrice, decimal maxPrice, DateTime date)
+        {
+            var query = "SELECT * FROM CityEvent WHERE (Price >= @minPrice AND Price <= @maxPrice) AND CONVERT(DATE, DateHourEvent) = @dateHourEvent;";
+
+            var parameter = new DynamicParameters();
+            parameter.Add("minPrice", minPrice);
+            parameter.Add("maxPrice", maxPrice);
+            parameter.Add("dateHourEvent", date);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.Query<CityEvent>(query, parameter).ToList();
+        }
+
         public bool InsertEvent(CityEvent cityEvent)
         {
             var query = "INSERT INTO CityEvent VALUES (@title, @description, @dateHourEvent, @local, @address, @price, 1);";
@@ -105,6 +119,37 @@ WHERE IdEvent = @idEvent;";
             using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
             return conn.Execute(query, parameter) == 1;
+        }
+
+        public bool HaveReservation(long id)
+        {
+            var query = @"SELECT * FROM CityEvent ce
+INNER JOIN EventReservation er on er.IdEvent = ce.IdEvent
+WHERE ce.IdEvent = @idEvent";
+
+            var parameter = new DynamicParameters();
+            parameter.Add("idEvent", id);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.Execute(query, parameter) > 0;
+        }
+
+        public bool IsActive(long id)
+        {
+            var query = "SELECT Status FROM CityEvent WHERE IdEvent = @idEvent";
+
+            var parameter = new DynamicParameters();
+            parameter.Add("idEvent", id);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            if (conn.QueryFirstOrDefault(query, parameter) == null)
+            {
+                return false;
+            }
+
+            return conn.QueryFirstOrDefault(query, parameter);
         }
     }
 }
