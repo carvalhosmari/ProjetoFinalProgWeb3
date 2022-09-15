@@ -19,9 +19,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
         {
             var query = "SELECT * FROM EventReservation;";
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Query<EventReservation>(query).ToList();
+                return conn.Query<EventReservation>(query).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
         }
 
         public bool InsertReservation(EventReservation eventReservation)
@@ -33,9 +42,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             parameter.Add("personName", eventReservation.PersonName);
             parameter.Add("quantity", eventReservation.Quantity);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool UpdateReservation(long id, EventReservation eventReservation)
@@ -48,9 +66,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             parameter.Add("id", id);
             parameter.Add("quantity", eventReservation.Quantity);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool DeleteReservation(long id)
@@ -60,9 +87,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             var parameter = new DynamicParameters();
             parameter.Add("idReservation", id);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
     }
 }

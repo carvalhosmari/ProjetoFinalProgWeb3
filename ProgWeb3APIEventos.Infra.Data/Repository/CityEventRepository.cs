@@ -19,9 +19,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
         {
             var query = "SELECT * FROM CityEvent;";
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Query<CityEvent>(query).ToList();
+                return conn.Query<CityEvent>(query).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
         }
 
         public List<CityEvent> GetByTitle(string eventTitle)
@@ -31,9 +40,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             var parameter = new DynamicParameters();
             parameter.Add("title", eventTitle);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Query<CityEvent>(query, parameter).ToList();
+                return conn.Query<CityEvent>(query, parameter).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
         }
 
         public List<CityEvent> GetByLocalAndDate(string local, DateTime date)
@@ -44,9 +62,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             parameter.Add("local", local);
             parameter.Add("dateHourEvent", date);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Query<CityEvent>(query, parameter).ToList();
+                return conn.Query<CityEvent>(query, parameter).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
         }
 
         public List<CityEvent> GetByPriceAndDate(decimal minPrice, decimal maxPrice, DateTime date)
@@ -58,9 +85,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             parameter.Add("maxPrice", maxPrice);
             parameter.Add("dateHourEvent", date);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Query<CityEvent>(query, parameter).ToList();
+                return conn.Query<CityEvent>(query, parameter).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
         }
 
         public bool InsertEvent(CityEvent cityEvent)
@@ -75,9 +111,18 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             parameter.Add("address", cityEvent.Address);
             parameter.Add("price", cityEvent.Price);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool UpdateEvent(long id, CityEvent cityEvent)
@@ -104,9 +149,18 @@ WHERE IdEvent = @idEvent;";
             parameter.Add("price", cityEvent.Price);
             parameter.Add("status", cityEvent.Status);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool DeleteEvent(long id)
@@ -116,9 +170,18 @@ WHERE IdEvent = @idEvent;";
             var parameter = new DynamicParameters();
             parameter.Add("idEvent", id);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) == 1;
+                return conn.Execute(query, parameter) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool HaveReservation(long id)
@@ -130,9 +193,18 @@ WHERE ce.IdEvent = @idEvent";
             var parameter = new DynamicParameters();
             parameter.Add("idEvent", id);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            return conn.Execute(query, parameter) > 0;
+                return conn.Execute(query, parameter) > 0;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return false;
+            }
         }
 
         public bool IsActive(long id)
@@ -142,14 +214,23 @@ WHERE ce.IdEvent = @idEvent";
             var parameter = new DynamicParameters();
             parameter.Add("idEvent", id);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-            if (conn.QueryFirstOrDefault(query, parameter) == null)
+            try
             {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+                if (conn.QueryFirstOrDefault(query, parameter) == null)
+                {
+                    return false;
+                }
+
+                return conn.QueryFirstOrDefault(query, parameter);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
                 return false;
             }
-
-            return conn.QueryFirstOrDefault(query, parameter);
         }
     }
 }
