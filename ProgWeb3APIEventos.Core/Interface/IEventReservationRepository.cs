@@ -7,7 +7,7 @@ namespace ProgWeb3APIEventos.Core.Interface
         List<EventReservation> GetAllReservations();
         List<EventReservation> GetByPersonNameAndTitle(string personName, string title);
         bool InsertReservation(EventReservation eventReservation);
-        bool UpdateReservation(long id, EventReservation eventReservation);
+        bool UpdateReservation(long id, long quantity);
         bool DeleteReservation(long id);
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgWeb3APIEventos.Core.Interface;
 using ProgWeb3APIEventos.Core.Model;
@@ -9,6 +10,7 @@ namespace ProgWeb3APIEventos.Controllers
     [Route("[controller]")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [Authorize]
     public class CityEventController : ControllerBase
     {
         public ICityEventService _cityEventService;
@@ -21,6 +23,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpGet("/eventos/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public ActionResult<List<CityEvent>> Get()
         {
             if (_cityEventService.GetAllEvents().Count == 0)
@@ -33,6 +36,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpGet("/evento/titulo{title:alpha}/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public ActionResult<List<CityEvent>> GetByTitle(string title)
         {
             if (!_cityEventService.GetByTitle(title).Any())
@@ -46,6 +50,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpGet("/evento/local{local:alpha}/data{date:datetime}/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public ActionResult<List<CityEvent>> GetByLocalAndDate(string local, DateTime date)
         {
             if (_cityEventService.GetByLocalAndDate(local, date).Count == 0)
@@ -59,6 +64,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpGet("/evento/precoentre{minPrice:decimal}&{maxPrice:decimal}/data{eventDate:datetime}/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public ActionResult<List<CityEvent>> GetByPriceAndDate(decimal minPrice, decimal maxPrice, DateTime eventDate)
         {
             if (_cityEventService.GetByPriceAndDate(minPrice, maxPrice, eventDate).Count == 0)
@@ -72,6 +78,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpPost("/evento/inserir")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [Authorize(Roles = "admin")]
         public ActionResult<CityEvent> InsertEvent(CityEvent cityEvent)
         {
             if (!_cityEventService.InsertEvent(cityEvent))
@@ -85,6 +92,7 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpPut("/evento/{id}/atualizar")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateEvent(long id, CityEvent cityEvent)
         {
             if (!_cityEventService.UpdateEvent(id, cityEvent))
@@ -100,6 +108,7 @@ namespace ProgWeb3APIEventos.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ServiceFilter(typeof(CanBeDeletedActionFilter))]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteEvent(long id)
         {
             if (!_cityEventService.DeleteEvent(id))

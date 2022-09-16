@@ -27,9 +27,9 @@ namespace ProgWeb3APIEventos.Core.Service
             return _eventReservationRepository.InsertReservation(eventReservation);
         }
 
-        public bool UpdateReservation(long id, EventReservation eventReservation)
+        public bool UpdateReservation(long id, long quantity)
         {
-            return _eventReservationRepository.UpdateReservation(id, eventReservation);
+            return _eventReservationRepository.UpdateReservation(id, quantity);
         }
 
         public bool DeleteReservation(long id)

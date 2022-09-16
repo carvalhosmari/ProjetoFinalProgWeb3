@@ -80,15 +80,13 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             }
         }
 
-        public bool UpdateReservation(long id, EventReservation eventReservation)
+        public bool UpdateReservation(long id, long quantity)
         {
-            eventReservation.IdReservation = id;
-
-            var query = "UPDATE EventReservation SET Quantity = @quantity";
+            var query = "UPDATE EventReservation SET Quantity = @quantity WHERE IdReservation = @id";
 
             var parameter = new DynamicParameters();
             parameter.Add("id", id);
-            parameter.Add("quantity", eventReservation.Quantity);
+            parameter.Add("quantity", quantity);
 
             try
             {
