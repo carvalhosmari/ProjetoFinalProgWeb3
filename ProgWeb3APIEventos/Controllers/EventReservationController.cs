@@ -30,6 +30,19 @@ namespace ProgWeb3APIEventos.Controllers
             return Ok(_eventReservationService.GetAllReservations());
         }
 
+        [HttpGet("/reserva/{personName}/{title}/consultar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<EventReservation>> GetByPersonNameAndTitle(string personName, string title)
+        {
+            if (!_eventReservationService.GetByPersonNameAndTitle(personName, title).Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(_eventReservationService.GetByPersonNameAndTitle(personName, title));
+        }
+
         [HttpPost("/reserva/inserir")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]

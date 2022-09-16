@@ -130,14 +130,14 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             cityEvent.IdEvent = id;
 
             var query = @"UPDATE CityEvent SET 
-Title = @title,
-Description = @description,
-DateHourEvent = @dateHourEvent,
-Local = @local,
-Address = @address,
-Price = @price,
-Status = @status
-WHERE IdEvent = @idEvent;";
+                        Title = @title,
+                        Description = @description,
+                        DateHourEvent = @dateHourEvent,
+                        Local = @local,
+                        Address = @address,
+                        Price = @price,
+                        Status = @status
+                        WHERE IdEvent = @idEvent;";
 
             var parameter = new DynamicParameters();
             parameter.Add("idEvent", id);
@@ -187,8 +187,8 @@ WHERE IdEvent = @idEvent;";
         public bool HaveReservation(long id)
         {
             var query = @"SELECT * FROM CityEvent ce
-INNER JOIN EventReservation er on er.IdEvent = ce.IdEvent
-WHERE ce.IdEvent = @idEvent";
+                    INNER JOIN EventReservation er on er.IdEvent = ce.IdEvent
+                    WHERE ce.IdEvent = @idEvent";
 
             var parameter = new DynamicParameters();
             parameter.Add("idEvent", id);

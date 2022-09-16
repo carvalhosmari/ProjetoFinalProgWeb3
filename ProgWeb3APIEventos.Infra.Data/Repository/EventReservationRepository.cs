@@ -33,6 +33,30 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
             }
         }
 
+        public List<EventReservation> GetByPersonNameAndTitle(string personName, string title)
+        {
+            var query = @"SELECT * FROM CityEvent ce
+                    INNER JOIN EventReservation er on er.IdEvent = ce.IdEvent
+                    WHERE er.PersonName = @personName AND ce.Title LIKE CONCAT ('%', @title, '%')";
+
+            var parameter = new DynamicParameters();
+            parameter.Add("personName", personName);
+            parameter.Add("title", title);
+
+            try
+            {
+                using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+                return conn.Query<EventReservation>(query, parameter).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
+
+                return null;
+            }
+        }
+
         public bool InsertReservation(EventReservation eventReservation)
         {
             var query = "INSERT INTO EventReservation VALUES (@idEvent, @personName, @quantity);";
