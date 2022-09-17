@@ -17,8 +17,8 @@ namespace ProgWeb3APIEventos.Filters
             };
 
             Console.WriteLine(@$"Tipo da exceção:  {context.Exception.GetType().Name}
-                              Mensagem:  {context.Exception.Message}
-                              Stack trace  {context.Exception.StackTrace}");
+Mensagem:  {context.Exception.Message}
+Stack trace  {context.Exception.StackTrace}");
 
             switch (context.Exception)
             {

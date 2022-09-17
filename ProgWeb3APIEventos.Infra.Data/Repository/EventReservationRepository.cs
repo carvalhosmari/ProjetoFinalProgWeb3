@@ -25,11 +25,11 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
 
                 return conn.Query<EventReservation>(query).ToList();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
 
-                return null;
+                throw;
             }
         }
 
@@ -49,11 +49,11 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
 
                 return conn.Query<EventReservation>(query, parameter).ToList();
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
 
-                return null;
+                throw;
             }
         }
 
@@ -72,11 +72,11 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
 
                 return conn.Execute(query, parameter) == 1;
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
 
-                return false;
+                throw;
             }
         }
 
@@ -94,11 +94,11 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
 
                 return conn.Execute(query, parameter) == 1;
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
 
-                return false;
+                throw;
             }
         }
 
@@ -115,11 +115,11 @@ namespace ProgWeb3APIEventos.Infra.Data.Repository
 
                 return conn.Execute(query, parameter) == 1;
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao fazer conexão com o banco de dados.\nMessage: {ex.Message}\nTarget site: {ex.TargetSite}\nStack trace: {ex.StackTrace}");
 
-                return false;
+                throw;
             }
         }
     }
