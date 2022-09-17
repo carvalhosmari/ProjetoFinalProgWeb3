@@ -6,7 +6,7 @@ namespace ProgWeb3APIEventos.Filters
 {
     public class CanBeDeletedActionFilter : ActionFilterAttribute
     {
-        private readonly ICityEventService _cityEventService;
+        readonly ICityEventService _cityEventService;
 
         public CanBeDeletedActionFilter(ICityEventService cityEventService)
         {
@@ -17,9 +17,16 @@ namespace ProgWeb3APIEventos.Filters
         {
             var idEvent = (long)context.ActionArguments["id"];
 
-            if (_cityEventService.HaveReservation(idEvent) || !_cityEventService.IsActive(idEvent) || _cityEventService.IsActive(idEvent) == null)
+            if (_cityEventService.HaveReservation(idEvent) || !_cityEventService.IsActive(idEvent))
             {
-                context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
+                var problem = new ProblemDetails
+                {
+                    Status = 400,
+                    Title = "Bad request",
+                    Detail = "Não foi possivel deletar o evento desejado, pois o mesmo encontra-se ativo e/ou possui reservas.",
+                };
+
+                context.Result = new ObjectResult(problem);
             }
         }
     }

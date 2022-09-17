@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProgWeb3APIEventos.Core.Interface;
 using ProgWeb3APIEventos.Core.Model;
+using ProgWeb3APIEventos.Filters;
 
 namespace ProgWeb3APIEventos.Controllers
 {
@@ -50,6 +51,8 @@ namespace ProgWeb3APIEventos.Controllers
         [HttpPost("/reserva/inserir")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ServiceFilter(typeof(EventReservationExistsActionFilter))]
         [Authorize(Roles = "cliente, admin")]
         public ActionResult<EventReservation> InsertReservation(EventReservation eventReservation)
         {

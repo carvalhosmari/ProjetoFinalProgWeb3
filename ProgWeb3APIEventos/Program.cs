@@ -71,6 +71,7 @@ builder.Services.AddScoped<ICityEventService, CityEventService>();
 builder.Services.AddScoped<IEventReservationRepository, EventReservationRepository>();
 builder.Services.AddScoped<IEventReservationService, EventReservationService>();
 builder.Services.AddScoped<CanBeDeletedActionFilter>();
+builder.Services.AddScoped<EventReservationExistsActionFilter>();
 
 var app = builder.Build();
 
